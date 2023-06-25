@@ -1,0 +1,17 @@
+server.port=80
+spring.cache.jcache.config=classpath:ehcache.xml
+spring.main.banner-mode=off
+
+server.api=v1/api
+server.api.version=v1
+springdoc.api-docs.path=/v1/api
+springdoc.swagger-ui.path=/documentation.html
+springdoc.swagger-ui.disable-swagger-default-url=true
+openapi30-modulename=ms-mp
+openapi30-apiversion=1.0
+
+## PARA USO LOCAL ##
+amazon.aws.accesskey=${AMAZON_KEY}
+amazon.aws.secretkey=${AMAZON_SECRET-KEY}
+amazon.aws.region.static=${AMAZON_REGION}
+amazon.aws.dynamodb.endpoint=${AMAZON_DYNAMO}

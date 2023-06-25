@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  ms-configuracion:
+    container_name: matiasleiva09/mercadopago
+    image: matiasleiva09/mercadopago
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - 80:80

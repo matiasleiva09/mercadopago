@@ -1,0 +1,39 @@
+spring:
+  main:
+    banner-mode: off
+  cache:
+    jcache:
+      config: ${spring.cache.jcache.config}
+# Logging
+logging:
+  level:
+    org:
+      springframework: DEBUG
+
+server:
+  port: 80
+  api:
+    version: ${server.api.version}
+  servlet:
+    context-path: /ms-configuracion
+
+amazon:
+  aws:
+    access-key: ${AMAZON_ACCESS-KEY}
+    secret-key: ${AMAZON_SECRET-KEY}
+    #region: ${amazon.aws.region.static}
+    dynamodb:
+      endpoint: ${AMAZON_DB}
+
+springdoc:
+  swagger-ui:
+    path: ${springdoc.swagger.ui.path}
+    disable-swagger-default-url: ${springdoc.swagger-ui.disable.swagger.default-url}
+  api-docs:
+    path: ${springdoc.api.docs.path}
+
+openapi30:
+  modulename: ${springdoc.swagger-ui.disable.swagger.default.url}
+  apiversion: ${openapi30.apiversion}
+
+
