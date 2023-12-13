@@ -8,10 +8,14 @@ import com.sires.mp.domain.MercadoPagoPayment;
 import com.sires.mp.domain.TokenMP;
 import com.sires.mp.service.dto.*;
 import com.sires.mp.domain.Configuracion;
+import com.sires.mp.service.dto.paypal.order.ItemPayPalDTO;
+import com.sires.mp.service.dto.paypal.order.OrderPayPalDTO;
 import com.sires.mp.service.utils.MPUtil;
+import org.junit.After;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -36,6 +40,7 @@ public interface MapperApp {
     PreferencePayerRequest fromEntityToDTO(UsuarioDTO usuario);
     @Mapping(source="initPoint",target="urlPreferencia")
     ResponsePreferenceDTO fromEntityToDTO(Preference pref);
+    @Mapping(source="expiresIn",target="expire")
     TokenMP fromEntityToDTO(LoginResponseDTO dto);
     @Mappings({
             @Mapping(source = "card.cardholder.identification.type",target = "cardHolderType"),
@@ -56,12 +61,31 @@ public interface MapperApp {
             @Mapping(source = "transactionDetails.netReceivedAmount",target = "netReceivedAmount"),
     })
     MercadoPagoPayment fromEntityToDTO(Payment payment);
+
+    @Mappings(
+            {
+                    @Mapping(source = "title",target = "name"),
+                    @Mapping(source = "description",target = "description"),
+                    @Mapping(source = "quantity",target = "quantity"),
+                    @Mapping(source = "unitPrice",target = "unitAmount.value")
+            }
+    )
+    ItemPayPalDTO fromEntityToDTO(ItemCompraDTO item);
+
+    /*@Mappings({
+            @Mapping(source = "id",target = "purcharseUnit.referenceId")
+    })
+    OrderPayPalDTO fromEntityToDTO(CarritoDTO dto);*/
     @AfterMapping
     default void calcularTotal(Payment payment, @MappingTarget MercadoPagoPayment dto) {
-        System.out.println("hola");
         dto.setTotalFeeAmount(MPUtil.calculateTotalFee(payment.getFeeDetails()));
     }
-
+/*
+    @After
+    default void calcularTotal(CarritoDTO carrito,@MappingTarget OrderPayPalDTO dto){
+         dto.getPurcharseUnit().get(0).getBreakDown().carrito.getItems().stream().map(paymentFeeDetail -> paymentFeeDetail.getUnitPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+*/
 
 
 }

@@ -12,7 +12,7 @@ FROM khipu/openjdk17-alpine:latest
 
 WORKDIR /app
 COPY --from=builder /app/target/ms-mercadopago-*.jar /app/ms-mercadopago.jar
-COPY --from=builder /app/target/classes/vps-3319366-x.dattaweb.com.pfx /app/vps-3319366-x.dattaweb.com.pfx
+COPY --from=builder /app/target/classes/siressoftware.com.pfx /app/siressoftware.com.pfx
 EXPOSE 80
 CMD ["java", "-jar", "/app/ms-mercadopago.jar"]
 

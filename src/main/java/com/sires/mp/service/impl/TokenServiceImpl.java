@@ -56,8 +56,9 @@ public class TokenServiceImpl implements TokenService {
             log.info("consumiendo endpoint de auth de mercado pago");
             LoginResponseDTO loginResponseDTO = template.exchange(tokenUrl, HttpMethod.POST, new HttpEntity<>(requestParam),
                     LoginResponseDTO.class).getBody();
-
-            MapperApp.INSTANCE.fromEntityToDTO(loginResponseDTO);
+            TokenMP datoGuardar = MapperApp.INSTANCE.fromEntityToDTO(loginResponseDTO);
+            datoGuardar.setDateTime(new Date());
+            repository.save(datoGuardar);
             log.info("****listo");
 
             return resultado;
@@ -107,7 +108,7 @@ public class TokenServiceImpl implements TokenService {
         requestParam.put("refresh_token", refreshToken);
         requestParam.put("grant_type", "refresh_token");
 
-        LoginResponseDTO loginResponseDTO = template.exchange("tokenUrl", HttpMethod.POST, new HttpEntity<>(requestParam),
+        LoginResponseDTO loginResponseDTO = template.exchange(tokenUrl, HttpMethod.POST, new HttpEntity<>(requestParam),
                 LoginResponseDTO.class).getBody();
         return loginResponseDTO;
     }

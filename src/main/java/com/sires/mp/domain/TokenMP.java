@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Entity
-@Table(name="token_np")
+@Table(name="mp_token")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

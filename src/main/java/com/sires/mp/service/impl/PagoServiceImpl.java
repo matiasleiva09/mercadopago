@@ -36,10 +36,12 @@ public class PagoServiceImpl implements PagoService {
 
         try {
             String token = tokenService.obtainLastToken();
+            log.info(token);
             return new PaymentClient().get(id, MPRequestOptions.builder()
                     .accessToken(token).build());
 
-        } catch (HttpStatusCodeException | MPApiException | MPException | BadRequestException ex) {
+        } catch (Exception ex) {
+            log.error("Ha ocurrido un error de comunicacion");
             log.error(ex.getMessage());
             throw new BadRequestException(ex.getMessage());
         }
@@ -52,7 +54,8 @@ public class PagoServiceImpl implements PagoService {
             Payment mpPayment = getPayment(id);
             if (mpPayment != null) {
                 log.info("Llegó la transacción: " + mpPayment.getId());
-                log.info("Comisión MP: " + mpPayment.getFeeDetails().get(0).getAmount());
+                if( mpPayment.getFeeDetails()!=null && mpPayment.getFeeDetails().size() > 0)
+                    log.info("Comisión MP: " + mpPayment.getFeeDetails().get(0).getAmount());
                 MercadoPagoPayment payment = MapperApp.INSTANCE.fromEntityToDTO(mpPayment);
                 log.info("Ingreso:" + payment.getTotalFeeAmount());
                 repository.save(payment);
